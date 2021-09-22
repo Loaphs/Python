@@ -2,9 +2,17 @@ import numpy as np
 import os.path
 
 passwords = []
-passwords = np.load('passwords.npy')
+
+while True:
+    try:
+        passwords = np.load('passwords.npy')
+        break
+    except:
+        np.save('passwords.npy', passwords)
+        break
 
 located = os.path.isfile('passwords.npy')
+
 
 def loadpass():
     passwords = np.load('passwords.npy')
