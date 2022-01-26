@@ -17,6 +17,10 @@ window.geometry('500x250')
 stopwatch_counter_num = 1
 stopwatch_running = False
 
+#TIMER_VARIABLES
+timer_counter_num = 0
+timer_running = False
+
 #CLOCK_FUNCTION
 def clock():
     date_time = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S/%p")
@@ -99,6 +103,62 @@ def stopwatch(work):
         stopwatch_stop.config(state = 'disabled')
         stopwatch_reset.config(state = 'disabled')
 
+#TIMER_FUNCTIONS
+def timer_counter(label):
+    def count():
+        global timer_running
+        if timer_running:
+            global timer_counter_num
+            if timer_counter_num == 0:
+                for i in range(3):
+                    display = "Time is up!"
+                    if platform.system() == 'Windows':
+                        winsound.Beep(5000, 1000)
+                    elif platform.system() == 'Darwin':
+                        os.system('say Time is Up')
+                    elif platform.system() == 'Linux':
+                        os.system('beep -f 5000')
+            timer_running = False
+            timer('reset')
+        else:
+            tt = datetime.datetime.fromtimestamp(timer_counter_num)
+            string = tt.strftime('%H:%M:%S')
+            display = string
+            timer_counter_num -= 1
+            label.config(text = display)
+        label.after(1000, count)
+    count()
+
+def timer(work):
+    if work == 'start':
+        global timer_running, timer_counter_num
+        timer_running = True
+        if timer_counter_num == 0:
+            timer_time_str = timer_entry.get()
+            hours, minutes, seconds = timer_time_str.split(':')
+            minutes = int(minutes) + (int(hours) * 60)
+            seconds = int(seconds) + (int(minutes) * 60)
+            timer_counter_num = timer_counter_num + seconds
+        timer_counter(timer_label)
+        timer_start.config(state = 'disabled')
+        timer_stop.config(state = 'enabled')
+        timer_reset.config(state = 'enabled')
+        timer_entry.delete(0, END)
+    elif work == 'stop':
+        timer_running = False
+        timer_start.config(state = 'enabled')
+        timer_stop.config(state = 'disabled')
+        timer_reset.config(state = 'enabled')
+    elif work == 'reset':
+        timer_running = False
+        timer_counter_num = 0
+        timer_start.config(state = 'enabled')
+        timer_stop.config(state = 'disabled')
+        timer_reset.config(state = 'disabled')
+        timer_entry.config(state = 'enabled')
+        timer_label.config(text = 'Timer')
+
+
 #TAB_CONTROL
 tabs_control = Notebook(window)
 clock_tab = Frame(tabs_control)
@@ -136,6 +196,20 @@ stopwatch_stop = Button(stopwatch_tab, text='Stop', state='disabled',command=lam
 stopwatch_stop.pack(anchor='center')
 stopwatch_reset = Button(stopwatch_tab, text='Reset', state='disabled', command=lambda:stopwatch('reset'))
 stopwatch_reset.pack(anchor='center')
+
+#TIMER_CONTROL
+timer_entry = Entry(timer_tab, font = 'calibri 15 bold')
+timer_entry.pack(anchor = 'center')
+timer_instructions = Label(timer_tab, font = 'calibri 10 bold', text = 'Enter Timer Time. Eg -> 01:30:30, 01 -> Hour, 30 -> Minutes, 30 -> Seconds')
+timer_instructions.pack(anchor = 'center')
+timer_label = Label(timer_tab, font = 'calibri 50 bold', text = 'Timer')
+timer_label.pack(anchor = 'center')
+timer_start = Button(timer_tab, text = 'Start', command=lambda:timer('start'))
+timer_start.pack(anchor = 'center')
+timer_stop = Button(timer_tab, text = 'Stop', state = 'disabled', command=lambda:timer('stop'))
+timer_stop.pack(anchor = 'center')
+timer_reset = Button(timer_tab, text = 'Reset', state = 'disabled', command=lambda:timer('reset'))
+timer_reset.pack(anchor = 'center')
 
 #FINALIZE
 clock()
