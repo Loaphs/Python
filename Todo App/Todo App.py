@@ -9,14 +9,10 @@ window.geometry("500x250")
 #CREATE_TODO
 def createItem():
     itemName = itemEntry.get()
-    def destroyItem():
-        return
 
     if itemName != '':
-        itemButton = Button(window, command = destroyItem)
-        itemButton.pack(setside = LEFT)
-        itemLabel = Label(window, font = 'calibri 15', text = itemName)
-        itemLabel.pack(setside = LEFT)
+        itemButton = Button(window, text = itemName, command = lambda: itemButton.destroy())
+        itemButton.pack(anchor = 'n')
         itemEntry.delete(0, END)
     else:
         return
@@ -30,6 +26,8 @@ itemEntry = Entry(window, font = 'calibri 15')
 itemEntry.pack(anchor = 'center')
 entryButton = Button(window, text = 'Create Item', command = createItem)
 entryButton.pack(anchor = 'center')
+
+window.bind('<Return>', createItem)
 
 
 window.mainloop()
