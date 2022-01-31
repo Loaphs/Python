@@ -18,7 +18,7 @@ def createItem(event):
         return
 
 #CREATE_TEXT
-titleLabel = Label(window, font = "calibra 30 bold", text = 'Todo List')
+titleLabel = Label(window, font = "calibri 30 bold", text = 'Todo List')
 titleLabel.pack(anchor = 'n')
 
 #ADD_TODO
