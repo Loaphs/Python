@@ -30,7 +30,5 @@ page = requests.get(url)
 htmlRead = Label(frame.scrollable_frame, font = 'calibri 9', text = page.text)
 htmlRead.pack()
 
-print(page.text)
-
 frame.pack()
 root.mainloop()
