@@ -7,7 +7,7 @@ window.title("Todo App")
 window.geometry("500x250")
 
 #CREATE_TODO
-def createItem():
+def createItem(event):
     itemName = itemEntry.get()
 
     if itemName != '':
@@ -24,10 +24,12 @@ titleLabel.pack(anchor = 'n')
 #ADD_TODO
 itemEntry = Entry(window, font = 'calibri 15')
 itemEntry.pack(anchor = 'center')
-entryButton = Button(window, text = 'Create Item', command = createItem)
-entryButton.pack(anchor = 'center')
 
+#ENTER_ITEM 
 window.bind('<Return>', createItem)
 
+#RESIZE_WINDOW
+window.resizable(False, True)
 
+#START_WINDOW
 window.mainloop()
