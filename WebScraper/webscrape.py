@@ -1,9 +1,4 @@
-import requests
+import pandas as pd
 from bs4 import BeautifulSoup as bs
+from selenium import webdriver as wd
 
-
-url='https://oxylabs.io/blog'
-response = requests.get(url)
-
-soup = bs(response.text, 'html.parser')
-print(soup.h1)
