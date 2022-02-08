@@ -1,4 +1,3 @@
-import string
 from tkinter import *
 from tkinter.ttk import *
 import datetime
