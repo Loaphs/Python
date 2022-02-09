@@ -2,23 +2,31 @@ import pandas as pd
 from bs4 import BeautifulSoup as bs
 from selenium import webdriver as wd
 
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 from tkinter import *
 from tkinter.ttk import *
 
-root = Tk()
-root.title('JobSite')
-root.geometry('500x250')
-
-tabs_control = Notebook(root)
-jobs_tab = Frame(tabs_control)
-tabs_control.add(jobs_tab, text = 'Jobs Available')
-
-driver = wd.Chrome(executable_path = 'C:\\Users\\Levi\\Documents\\ChromeDriver\\chromedriver.exe')
+s=Service(ChromeDriverManager().install())
+driver = wd.Chrome(service=s)
 driver.get('https://realpython.github.io/fake-jobs/')
 
 results = []
 content = driver.page_source
-soup = bs(content)
+soup = bs(content, 'html.parser')
+
+root = Tk()
+root.title('JobSite')
+root.geometry('900x600')
+
+scrollbar = Scrollbar(root)
+scrollbar.pack(side = RIGHT, fill = Y)
+
+tabs_control = Notebook(root)
+jobs_tab = Frame(tabs_control)
+tabs_control.add(jobs_tab, text = 'Jobs Available')
+tabs_control.pack(expand = 1, fill = "both")
 
 for element in soup.findAll(attrs={'class': 'card'}):
     name = element.find('h2')
@@ -28,4 +36,4 @@ for element in soup.findAll(attrs={'class': 'card'}):
         item_label.pack(anchor = 'n')
 
 
-root.mainloop
+root.mainloop()
