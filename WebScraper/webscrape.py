@@ -30,31 +30,27 @@ scroll_bar = Scrollbar(jobs_tab)
 scroll_bar.pack(side = RIGHT, fill = Y)
 
 results = []
+resultlinks = []
 
 results_box = Listbox(jobs_tab, yscrollcommand = scroll_bar.set)
 
 for element in soup.findAll(attrs={'class': 'card'}):
     name = element.find('h2')
-    link = element.find('a')
-    print(link)
+    link = element.find('a', string = 'Apply')
     if name not in results:
+        results.append(name.text)
         results_box.insert(END, name.text)
-    for item in link:
-        if link.text == 'Apply':
-                results.append(link.href)
+    if link not in resultlinks:
+        resultlinks.append(link['href'])
 
 def item_selected(event):
     selected_job = results_box.curselection()
 
     index = results_box.index(selected_job)
 
-    print(results)
-    #webbrowser.open(results[index])
+    webbrowser.open(resultlinks[index])
 
 results_box.bind('<<ListboxSelect>>', item_selected)
-
-df = pd.DataFrame({'Names': results})
-df.to_csv('names.csv', index = FALSE, encoding = 'utf-8')
 
 results_box.pack(side = LEFT, expand = TRUE, fill = BOTH)
 
