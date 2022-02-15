@@ -26,3 +26,8 @@ class Platform(py.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.surf = py.Surface((WID, 20))
+        self.surf.fill((255, 0, 0))
+        self.rect = self.surf.get_rect(center = (WID/2, HEI - 10))
+
+pt1 = Platform()
+p1 = Player()
