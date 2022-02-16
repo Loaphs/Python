@@ -26,6 +26,14 @@ class Player(Sprite):
     def __init__(self, startx, starty):
         super().__init__("Python\\PyGame Platformer\\p1_front.png", startx, starty)
 
+    def update(self):
+        pass
+
+    def move(self, x, y):
+        self.rect.move_ip([x, y])
+
+
+
 class Box(Sprite):
     def __init__(self, startx, starty):
         super().__init__("Python\\PyGame Platformer\\stone.png", startx, starty)
