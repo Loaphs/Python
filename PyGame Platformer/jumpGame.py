@@ -5,7 +5,6 @@ HEI = 300
 BG = (0, 0, 0)
 
 
-
 #SPRITE
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, image, startx, starty):
@@ -26,12 +25,22 @@ class Player(Sprite):
     def __init__(self, startx, starty):
         super().__init__("Python\\PyGame Platformer\\p1_front.png", startx, starty)
 
+        self.speed = 4
+        self.jumpspd = 20
+
     def update(self):
-        pass
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_LEFT]:
+            self.move(-self.speed,0)
+        elif key[pygame.K_RIGHT]:
+            self.move(self.speed,0)
+
+        if key[pygame.K_UP]:
+            self.move(0,-self.jumpspd)
 
     def move(self, x, y):
         self.rect.move_ip([x, y])
-
 
 
 class Box(Sprite):
