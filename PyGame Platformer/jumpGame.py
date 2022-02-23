@@ -27,17 +27,25 @@ class Player(Sprite):
 
         self.speed = 4
         self.jumpspd = 20
+        self.vsp = 0
 
     def update(self):
+        hsp = 0
+
         key = pygame.key.get_pressed()
 
         if key[pygame.K_LEFT]:
-            self.move(-self.speed,0)
+            hsp = -self.speed
         elif key[pygame.K_RIGHT]:
-            self.move(self.speed,0)
+            hsp = self.speed
 
         if key[pygame.K_UP]:
             self.move(0,-self.jumpspd)
+
+        #GRAVITY
+        
+
+        self.move(hsp, self.vsp)
 
     def move(self, x, y):
         self.rect.move_ip([x, y])
