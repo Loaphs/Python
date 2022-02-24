@@ -26,24 +26,36 @@ class Player(Sprite):
         super().__init__("Python\\PyGame Platformer\\p1_front.png", startx, starty)
 
         self.speed = 4
-        self.jumpspd = 20
+        self.jumpspd = 10
         self.vsp = 0
+        self.gravity = .3
 
-    def update(self):
+        self.min_jumpspd = 3
+        self.prev_key = pygame.key.get_pressed()
+
+    def update(self, boxes):
         hsp = 0
+        onground = pygame.sprite.spritecollideany(self, boxes)
 
         key = pygame.key.get_pressed()
-
         if key[pygame.K_LEFT]:
             hsp = -self.speed
         elif key[pygame.K_RIGHT]:
             hsp = self.speed
 
-        if key[pygame.K_UP]:
+        if key[pygame.K_UP] and onground:
             self.move(0,-self.jumpspd)
 
+        if self.prev_key[pygame.K_UP] and not key[pygame.K_UP]:
+            if self.vsp < -self.min_jumpspd:
+                self.vsp = -self.min_jumpspd
+
         #GRAVITY
-        
+        if self.vsp < 10 and not onground:
+            self.vsp += self.gravity
+
+        if self.vsp > 0 and onground:
+            self.vsp = 0
 
         self.move(hsp, self.vsp)
 
@@ -69,7 +81,7 @@ def main():
     #MAIN LOOP
     while True:
         pygame.event.pump()
-        player.update()
+        player.update(boxes)
 
         screen.fill(BG)
         player.draw(screen)
