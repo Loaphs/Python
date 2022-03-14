@@ -17,6 +17,13 @@ class Ghost:
         self.t1 = trait1
         self.t2 = trait2
         self.t3 = trait3
+    
+    def __repr__(self):
+        return repr(self.name)
+
+def newlabel(ghost):
+    ghostLabel = Label(window, font='calibri 14 bold', text=ghost)
+    ghostLabel.pack(anchor='center')
 
 def main(item):
     item = input()
@@ -26,7 +33,9 @@ def update(item):
     for ghost in ghosts:
         if hasattr(ghost, item) == False:
             ghosts.remove(ghost)
-    print(ghosts)
+        else:
+            newlabel(ghost)
+        print(repr(ghost))
     main(item)
 
 
@@ -50,3 +59,4 @@ if __name__ == '__main__':
     item = NULL
 
     main(item)
+    window.mainloop()
